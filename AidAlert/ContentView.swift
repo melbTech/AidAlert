@@ -8,17 +8,53 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+    init() {
+        // Customize TabView background color
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+//        appearance.backgroundColor = UIColor.systemGray6 // Slightly darker color
+        UITabBar.appearance().standardAppearance = appearance
+        if #available(iOS 15.0, *) {
+            UITabBar.appearance().scrollEdgeAppearance = appearance
         }
-        .padding()
+    }
+
+    var body: some View {
+        TabView {
+            ChatScreen()
+                .tabItem {
+                    Image(systemName: "brain")
+                    Text("AidAI")
+                        .frame(width: 100, height:20)
+                        .background(Color.blue)
+                }
+            PrepareScreen()
+                .tabItem {
+                    Image(systemName: "list.bullet")
+                    Text("Prepare")
+                }
+            AlertScreen()
+                .tabItem {
+                    Image(systemName: "exclamationmark.triangle")
+                    Text("Alert")
+                }
+            MapScreen()
+                .tabItem {
+                    Image(systemName: "map")
+                    Text("Map")
+                }
+            MoreScreen()
+                .tabItem {
+                    Image(systemName: "ellipsis")
+                    Text("More")
+                }
+        }
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }
+
