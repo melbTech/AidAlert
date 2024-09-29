@@ -11,7 +11,12 @@ import SwiftUI
 struct AidAlertApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            //ContentView()
+            MapsView()
+//            MoreView()
+//            PrepareView()
+//            AlertsView()
         }
     }
 }
+

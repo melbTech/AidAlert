@@ -7,15 +7,46 @@
 
 import SwiftUI
 
+//struct ContentView: View {
+//    var body: some View {
+//        VStack {
+//            Image(systemName: "globe")
+//                .imageScale(.large)
+//                .foregroundStyle(.tint)
+//            Text("hello, world! 🚀🌍🚀")
+//        }
+//        .padding()
+//    }
+//}
+
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            MapsView()
+                .tabItem {
+                    Image(systemName: "map")
+                    Text("Map")
+                }
+            
+            PrepareView()
+                .tabItem {
+                    Image(systemName: "shield")
+                    Text("Prepare")
+                }
+            
+            AlertsView()
+                .tabItem {
+                    Image(systemName: "bell")
+                    Text("Alerts")
+                }
+            
+            MoreView()
+                .tabItem {
+                    Image(systemName: "ellipsis")
+                    Text("More")
+                }
         }
-        .padding()
+        .edgesIgnoringSafeArea(.bottom) // Optional: ignores safe area at the bottom
     }
 }
 

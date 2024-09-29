@@ -24,6 +24,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		27CF26B02CA8D5760065CEDF /* libswiftMapKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftMapKit.tbd; path = usr/lib/swift/libswiftMapKit.tbd; sourceTree = SDKROOT; };
+		27CF26B12CA8D5760065CEDF /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A0A267BF2CA8898A00FCC7DE /* AidAlert.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AidAlert.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0A267CF2CA8898C00FCC7DE /* AidAlertTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AidAlertTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0A267D92CA8898C00FCC7DE /* AidAlertUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AidAlertUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,12 +74,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		27CF26AF2CA8D5760065CEDF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				27CF26B02CA8D5760065CEDF /* libswiftMapKit.tbd */,
+				27CF26B12CA8D5760065CEDF /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A0A267B62CA8898A00FCC7DE = {
 			isa = PBXGroup;
 			children = (
 				A0A267C12CA8898A00FCC7DE /* AidAlert */,
 				A0A267D22CA8898C00FCC7DE /* AidAlertTests */,
 				A0A267DC2CA8898C00FCC7DE /* AidAlertUITests */,
+				27CF26AF2CA8D5760065CEDF /* Frameworks */,
 				A0A267C02CA8898A00FCC7DE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -195,6 +207,8 @@
 			);
 			mainGroup = A0A267B62CA8898A00FCC7DE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A0A267C02CA8898A00FCC7DE /* Products */;
 			projectDirPath = "";
@@ -399,6 +413,9 @@
 				DEVELOPMENT_TEAM = 5FDW2Y29MU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need access to your location to show nearby shelters.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need access to your location to show nearby shelters.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -428,6 +445,9 @@
 				DEVELOPMENT_TEAM = 5FDW2Y29MU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need access to your location to show nearby shelters.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need access to your location to show nearby shelters.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
