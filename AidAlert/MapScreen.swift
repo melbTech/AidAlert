@@ -245,14 +245,20 @@ struct MapScreen: View {
 
                 // Display disaster alert if available
                 if let disasterAlert = locationManager.disasterAlert {
-                    Text(disasterAlert)
-                        .font(.headline)
-                        .foregroundColor(.red)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                        .padding(.horizontal)
+                    HStack {
+                        Spacer() // Ensure text is centered horizontally
+                        Text(disasterAlert)
+                            .font(.headline)
+                            .foregroundColor(.red)
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(10)
+                            .shadow(radius: 5)
+                            .padding(.horizontal)
+                        Spacer() // Ensure text is centered horizontally
+                    }
+                    .frame(maxWidth: .infinity) // Set the alert to take full width of the view
+                    .padding(.top) // Add padding to the top
                 }
 
                 ZStack {
