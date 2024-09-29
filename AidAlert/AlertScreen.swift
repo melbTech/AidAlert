@@ -38,12 +38,13 @@ struct AlertScreen: View {
     @State private var isPickerVisible: Bool = false // State for dropdown visibility
     
     var body: some View {
-        Text("Disaster Alerts")
-            .font(.title)
-            .padding()
-            .bold()
-            .frame(maxWidth: .infinity, alignment: .leading)
-        VStack (spacing: 0) {
+        VStack(spacing: 0) {
+            Text("Disaster Alerts")
+                .font(.title)
+                .padding()
+                .bold()
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
             Text("Search for alerts by state")
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -54,7 +55,8 @@ struct AlertScreen: View {
                     .padding()
                 
                 Button(action: {
-                    alertsViewModel.fetchDisasterAlerts(for: stateInput) // Fetch alerts for entered state
+                    // Fetch alerts for entered state
+                    alertsViewModel.fetchDisasterAlerts(for: stateInput)
                 }) {
                     Text("Search")
                         .padding()
@@ -106,9 +108,9 @@ struct AlertScreen: View {
             }
             
             // Alert Container
-            if !alertsViewModel.disasterAlert.isEmpty {
+            if let alert = alertsViewModel.disasterAlert {
                 VStack(alignment: .leading) {
-                    Text(alertsViewModel.disasterAlert)
+                    Text(alert.title) // Title of the alert
                         .font(.headline)
                         .padding()
                         .foregroundColor(.white)
@@ -116,12 +118,12 @@ struct AlertScreen: View {
                         .cornerRadius(8)
 
                     // Display additional information
-                    Text("Issued Date: \(alertsViewModel.issuedDate)") // Use the property for issued date
+                    Text("Issued Date: \(alert.issuedDate)") // Use the property for issued date
                         .font(.subheadline)
                         .foregroundColor(.white)
                         .padding([.leading, .bottom])
                     
-                    Text("Expiration Date: \(alertsViewModel.expirationDate)") // Use the property for expiration date
+                    Text(alert.description) // Description of the alert
                         .font(.subheadline)
                         .foregroundColor(.white)
                         .padding([.leading, .bottom])
@@ -130,7 +132,11 @@ struct AlertScreen: View {
                 .background(Color.red.opacity(0.7))
                 .cornerRadius(10)
                 .padding()
+            } else {
+                Text("No alerts available")
+                    .padding()
             }
+
             
             Spacer()
         }

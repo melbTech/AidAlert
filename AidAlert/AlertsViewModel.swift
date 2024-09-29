@@ -3,44 +3,28 @@ import CoreLocation
 import Combine
 import UserNotifications
 
-// Disaster Model for decoding the FEMA API response
-struct Disaster: Codable, Identifiable {
-    let id = UUID() // Assign a unique identifier
-    let declarationTitle: String
-    let incidentBeginDate: String
-    let expirationDate: String?
-}
-
-// Codable struct for the full FEMA API response
-struct DisasterResponse: Codable {
-    let DisasterDeclarationsSummaries: [Disaster]
+struct DisasterAlert: Identifiable {
+    let id = UUID()
+    let title: String
+    let description: String
+    let issuedDate: String
 }
 
 class AlertsViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var userLocation: CLLocation?
     @Published var userLocality: String = "Your Location"
-    @Published var disasterAlert: String = "Fetching alerts..."
-    @Published var selectedState: String = "Select State"
-    @Published var issuedDate: String = ""
-    @Published var expirationDate: String = ""
-
+    @Published var disasterAlert: DisasterAlert? // Change to optional DisasterAlert type
+    @Published var selectedState: String = "Select State" // New property for selected state
     
     private var locationManager = CLLocationManager()
-    
-    // Change private to fileprivate to allow limited access within the module
-    private var _sentNotifications = Set<String>()
-    
-    // Computed property to expose sentNotifications
-    var sentNotifications: [String] {
-        Array(_sentNotifications) // Converting Set<String> to Array<String> for ForEach compatibility
-    }
+    private var sentNotifications = Set<String>()
     
     override init() {
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        startUpdatingLocation()
+        startUpdatingLocation() // Start updating location
     }
     
     func startUpdatingLocation() {
@@ -50,7 +34,7 @@ class AlertsViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             userLocation = location
-            reverseGeocodeLocation(location)
+            reverseGeocodeLocation(location) // Fetch locality and alerts
         }
     }
     
@@ -61,7 +45,7 @@ class AlertsViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
                 DispatchQueue.main.async {
                     self.userLocality = placemark.locality ?? "Your Location"
                     if let state = placemark.administrativeArea {
-                        self.fetchDisasterAlerts(for: state)
+                        self.fetchDisasterAlerts(for: state) // Fetch alerts based on state
                     }
                 }
             }
@@ -69,8 +53,10 @@ class AlertsViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func fetchDisasterAlerts(for state: String) {
+        // Update selected state
         self.selectedState = state
         
+        // FEMA API URL using the state
         let femaApiUrl = "https://www.fema.gov/api/open/v2/DisasterDeclarationsSummaries?$filter=state eq '\(state)' and lastIAFilingDate eq null&$orderby=incidentBeginDate desc&$top=10&$format=json"
         
         guard let url = URL(string: femaApiUrl) else { return }
@@ -93,18 +79,20 @@ class AlertsViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
                 if let jsonResponse = jsonResponse as? [String: Any],
                    let disasters = jsonResponse["DisasterDeclarationsSummaries"] as? [[String: Any]] {
                     
+                    // Handle the title and issued date of the most recent disaster
                     if let firstDisaster = disasters.first,
-                       let declarationTitle = firstDisaster["declarationTitle"] as? String {
+                       let declarationTitle = firstDisaster["declarationTitle"] as? String,
+                       let issuedDate = firstDisaster["declarationDate"] as? String { // Adjust to match your API response structure
+                        
+                        let alert = DisasterAlert(title: declarationTitle, description: "Alert ongoing in \(state)", issuedDate: issuedDate)
+                        
                         DispatchQueue.main.async {
-                            self.disasterAlert = "Alert: \(declarationTitle) is ongoing in \(state)"
-                            self.sendNotificationIfNewAlert(declarationTitle: declarationTitle)
-                            self.issuedDate = firstDisaster["declarationDate"] as? String ?? "N/A"
-                            self.expirationDate = firstDisaster["expirationDate"] as? String ?? "N/A"
+                            self.disasterAlert = alert // Set the disaster alert
                             self.sendNotificationIfNewAlert(declarationTitle: declarationTitle)
                         }
                     } else {
                         DispatchQueue.main.async {
-                            self.disasterAlert = "No recent active disasters reported for \(state)"
+                            self.disasterAlert = nil // No alerts
                         }
                     }
                 }
@@ -115,9 +103,9 @@ class AlertsViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
 
     private func sendNotificationIfNewAlert(declarationTitle: String) {
-        if !_sentNotifications.contains(declarationTitle) {
+        if !sentNotifications.contains(declarationTitle) {
             sendNotification(title: "New Disaster Alert", body: declarationTitle)
-            _sentNotifications.insert(declarationTitle)
+            sentNotifications.insert(declarationTitle)
         }
     }
 
@@ -137,5 +125,4 @@ class AlertsViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         }
     }
 }
-
 
