@@ -25,7 +25,8 @@ struct ContentView: View {
                 .tabItem {
                     Image(systemName: "brain")
                     Text("AidAI")
-                        .background(Color.blue.opacity(0.1))
+                        .frame(width: 100, height:20)
+                        .background(Color.blue)
                 }
             PrepareScreen()
                 .tabItem {
